@@ -1,0 +1,5 @@
+# Ignore config file to prevent credential leakage
+config.json
+
+# Don't copy any downloaded results
+/downloads/

@@ -5,6 +5,7 @@ import urllib.request
 import math
 import os
 import pathvalidate
+import time
 
 # Load config
 config = json.load(open('config.json'))
@@ -35,7 +36,8 @@ if(results_count == 0):
 print('Found ' + str(results_count) + ' images, producing ' + str(results_pages) + ' pages of results')
 
 # Create results folders
-folder_name = pathvalidate.sanitize_filename(search_string)
+spaced_name = search_string.replace(":"," ")
+folder_name = pathvalidate.sanitize_filename(spaced_name)
 downloads_folder = './downloads/' + folder_name + '/'
 downloads_json_folder = downloads_folder + 'json/'
 try:
@@ -56,6 +58,7 @@ for page in range(0,results_pages):
     # Get responses for page
     page_search_response = urllib.request.urlopen(page_search_request).read()
     page_search_data = json.loads(page_search_response)
+    time.sleep(.1)
     
     # Loop through each image
     for image in page_search_data['images']:
@@ -73,6 +76,9 @@ for page in range(0,results_pages):
         # Output metadata
         with open(image_json_path, 'w') as outfile:
             json.dump(image,outfile)
+
+        # Pause to prevent API flooding
+        time.sleep(.1)
 
         # Increment the image counter
         counter += 1

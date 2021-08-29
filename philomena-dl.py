@@ -36,15 +36,17 @@ if(results_count == 0):
 print('Found ' + str(results_count) + ' images, producing ' + str(results_pages) + ' pages of results')
 
 # Create results folders
-spaced_name = search_string.replace(":"," ")
-folder_name = pathvalidate.sanitize_filename(spaced_name)
-downloads_folder = './downloads/' + folder_name + '/'
+folder_name = pathvalidate.sanitize_filename(search_string)
+downloads_folder = './downloads/'
 downloads_json_folder = downloads_folder + 'json/'
 try:
     os.makedirs(downloads_folder)
+except FileExistsError:
+    print("Downloads directory already exists.")
+try:
     os.makedirs(downloads_json_folder)
 except FileExistsError:
-    print("Results directory already exists.")
+    print("JSON directory already exists.")
 
 # Loop through each page
 counter = 1
@@ -77,8 +79,6 @@ for page in range(0,results_pages):
         with open(image_json_path, 'w') as outfile:
             json.dump(image,outfile)
 
-        # Pause to prevent API flooding
         time.sleep(.1)
-
         # Increment the image counter
         counter += 1

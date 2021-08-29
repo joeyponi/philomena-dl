@@ -69,7 +69,10 @@ for page in range(0,results_pages):
         print('Downloading ' + str(image['id'])  + ' (' + str(counter) + ' of ' + str(results_count) + ')')
 
         # Set file paths
-        image_file_path = downloads_folder + str(image['id']) + '.' + image['format']
+        if(image['format'] == 'svg'):
+            image_file_path = downloads_folder + str(image['id']) + '.png'
+        else:
+            image_file_path = downloads_folder + str(image['id']) + '.' + image['format']
         image_json_path = downloads_json_folder + str(image['id']) + '.json'
 
         # Download the image
